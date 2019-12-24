@@ -38,7 +38,7 @@
         function preload() {
             this.load.image('sky', 'assets/sky.png');
             this.load.image('ground', 'assets/platform.png');
-            this.load.image('star', 'assets/star.png');
+            this.load.image('snowflake', 'assets/snowflake.png');
             this.load.image('bomb', 'assets/bomb.png');
             this.load.spritesheet('santa-running-left',
                 'assets/santa-running-left.png',
@@ -52,7 +52,7 @@
         let platforms;
         let player;
         let cursors;
-        let stars;
+        let snowflakes;
         let score = 0;
         let scoreText;
         let bombs;
@@ -91,19 +91,19 @@
             });
             this.physics.add.collider(player, platforms);
             cursors = this.input.keyboard.createCursorKeys();
-            stars = this.physics.add.group({
-                key: 'star',
+            snowflakes = this.physics.add.group({
+                key: 'snowflake',
                 repeat: 11,
                 setXY: { x: 12, y: 0, stepX: 70 }
             });
 
-            stars.children.iterate(function (child) {
+            snowflakes.children.iterate(function (child) {
 
                 child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 
             });
-            this.physics.add.collider(stars, platforms);
-            this.physics.add.overlap(player, stars, collectStar, null, this);
+            this.physics.add.collider(snowflakes, platforms);
+            this.physics.add.overlap(player, snowflakes, collectSnowflake, null, this);
             scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
             bombs = this.physics.add.group();
 
@@ -122,14 +122,14 @@
 
             gameOver = true;
         }
-        function collectStar(player, star) {
-            star.disableBody(true, true);
+        function collectSnowflake(player, snowflake) {
+            snowflake.disableBody(true, true);
 
             score += 10;
             scoreText.setText('Score: ' + score);
 
-            if (stars.countActive(true) === 0) {
-                stars.children.iterate(function (child) {
+            if (snowflakes.countActive(true) === 0) {
+                snowflakes.children.iterate(function (child) {
 
                     child.enableBody(true, child.x, 0, true, true);
 
